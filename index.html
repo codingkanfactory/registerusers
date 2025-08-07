@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Buat Akun Anda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="register.css">
+</head>
+<body>
+  <!-- Registration Form -->
+  <div class="container" id="registrationForm">
+    <h2>Buat Akun Anda</h2>
+    <p class="subtitle">Bergabunglah dengan kami dan mulai perjalanan Anda</p>
+    
+    <div class="notification" id="notification"></div>
+    
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" placeholder="Masukkan nama lengkap" required>
+        <p class="input-hint">Pastikan nama sudah benar, Anda dapat mengubahnya jika ada typo</p>
+      </div>
+      
+      <div class="form-group">
+        <label for="nisn">NISN</label>
+        <input type="text" id="nisn" placeholder="Masukkan NISN" required>
+        <p class="input-hint">Nomor Induk Siswa Nasional (10 digit)</p>
+      </div>
+      
+      <button type="submit" class="btn btn-primary" id="registerBtn">
+        Daftar Akun Anda
+      </button>
+    </form>
+  </div>
+  
+  <!-- Success Screen -->
+  <div class="container hidden" id="successScreen">
+    <div class="success-screen">
+      <div class="success-icon">✓</div>
+      <h2>Pendaftaran Berhasil!</h2>
+      <p class="subtitle">Apakah nama Anda sudah benar?</p>
+      
+      <div class="form-group">
+        <input type="text" id="namaPengguna" disabled>
+      </div>
+      
+      <div class="button-group">
+        <button class="btn btn-outline" id="editNameBtn">Edit Nama</button>
+        <button class="btn btn-primary" id="continueBtn">Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Name Edit Modal -->
+  <div class="modal" id="nameModal">
+    <div class="modal-content">
+      <h3>Edit Nama</h3>
+      
+      <div class="form-group">
+        <label for="newName">Nama yang benar</label>
+        <input type="text" id="newName" placeholder="Masukkan nama yang benar">
+      </div>
+      
+      <div class="button-group">
+        <button class="btn btn-secondary" id="cancelNameBtn">Batal</button>
+        <button class="btn btn-primary" id="saveNameBtn">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.8.1/firebase-app-compat.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.8.1/firebase-database-compat.min.js"></script>
+  <script src="register.js"></script>
+</body>
+</html>
