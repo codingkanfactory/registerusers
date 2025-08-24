@@ -38,14 +38,6 @@ let currentUID = null;
 let currentCaseId = null;
 
 // Utility functions
-function generateRandomCode(length = 8) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-}
 
 function showNotification(message, type) {
   notification.textContent = message;
@@ -124,9 +116,6 @@ registerForm.addEventListener('submit', (e) => {
 
   showLoading(registerBtn, 'Mendaftar...');
 
-  // Generate random code as UID
-  currentUID = `users-${generateRandomCode()}`;
-
   // Check if NISN already exists in any user
   usersRef.orderByChild('nisn').equalTo(nisn).once('value')
     .then((snapshot) => {
@@ -134,14 +123,8 @@ registerForm.addEventListener('submit', (e) => {
         throw new Error('NISN sudah terdaftar');
       }
 
-      // Check if generated UID already exists (very unlikely but safe check)
-      return usersRef.child(currentUID).once('value');
-    })
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        // If by chance the random code exists, generate a new one
-        currentUID = `users-${generateRandomCode()}`;
-      }
+      // Generate UID using Firebase push key
+      currentUID = usersRef.push().key;
 
       // User data for users collection
       const userData = {
