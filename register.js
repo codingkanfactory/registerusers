@@ -38,6 +38,15 @@ let currentUID = null;
 let currentCaseId = null;
 
 // Utility functions
+function generateRandomCode(length = 8) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 function showNotification(message, type) {
   notification.textContent = message;
   notification.className = `notification ${type}`;
@@ -115,14 +124,23 @@ registerForm.addEventListener('submit', (e) => {
 
   showLoading(registerBtn, 'Mendaftar...');
 
-  // Use NISN as UID
-  currentUID = nisn;
+  // Generate random code as UID
+  currentUID = `users-${generateRandomCode()}`;
 
-  // Check if NISN already exists
-  usersRef.child(currentUID).once('value')
+  // Check if NISN already exists in any user
+  usersRef.orderByChild('nisn').equalTo(nisn).once('value')
     .then((snapshot) => {
       if (snapshot.exists()) {
         throw new Error('NISN sudah terdaftar');
+      }
+
+      // Check if generated UID already exists (very unlikely but safe check)
+      return usersRef.child(currentUID).once('value');
+    })
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        // If by chance the random code exists, generate a new one
+        currentUID = `users-${generateRandomCode()}`;
       }
 
       // User data for users collection
